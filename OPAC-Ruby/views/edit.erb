@@ -1,0 +1,22 @@
+<h2>Edit Book</h2>
+
+<form method="post" action="/edit/<%= @book.book_id %>">
+  <p>
+    <label>Title:</label><br>
+    <input type="text" name="title" value="<%= @book.title %>" required>
+  </p>
+  <p>
+    <label>Author:</label><br>
+    <input type="text" name="author" value="<%= @book.author %>" required>
+  </p>
+  <p>
+    <label>ISBN:</label><br>
+    <input type="text" name="isbn" value="<%= @book.isbn %>" required>
+  </p>
+  <p>
+    <label>Genre:</label><br>
+    <input type="text" name="genre" value="<%= @book.genre %>">
+  </p>
+  <button type="submit">Save Changes</button>
+  <a href="/">Cancel</a>
+</form>

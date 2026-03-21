@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>OPAC System</title>
+</head>
+<body>
+  <nav>
+    <a href="/">Home</a> |
+    <% if admin? %>
+      <a href="/add">Add Book</a> |
+      <a href="/overdue">Overdue</a> |
+      <a href="/logout">Logout</a>
+    <% else %>
+      <a href="/login">Admin Login</a>
+    <% end %>
+  </nav>
+  <hr>
+
+  <% if @flash %>
+    <p><strong><%= @flash[:msg] %></strong></p>
+  <% end %>
+
+  <%= yield %>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<h2>Borrow Book</h2>
+
+<p><strong>Title:</strong> <%= @book.title %></p>
+<p><strong>Author:</strong> <%= @book.author %></p>
+<p><strong>ISBN:</strong> <%= @book.isbn %></p>
+
+<form method="post" action="/borrow/<%= @book.book_id %>">
+  <p>
+    <label>Borrower Name:</label><br>
+    <input type="text" name="borrower" required>
+  </p>
+  <p>
+    <label>Borrow Date:</label><br>
+    <input type="date" name="borrow_date" value="<%= @today %>" required>
+  </p>
+  <p>
+    <label>Due Date:</label><br>
+    <input type="date" name="due_date" required>
+  </p>
+  <button type="submit">Confirm Borrow</button>
+  <a href="/">Cancel</a>
+</form>

@@ -1,0 +1,33 @@
+<h2>Overdue Books</h2>
+
+<p>Total overdue: <%= @books.size %></p>
+
+<% if @books.empty? %>
+  <p>No overdue books.</p>
+<% else %>
+  <table border="1" cellpadding="5">
+    <tr>
+      <th>Borrow ID</th>
+      <th>Title</th>
+      <th>Borrower</th>
+      <th>Borrow Date</th>
+      <th>Due Date</th>
+      <th>Days Overdue</th>
+      <th>Fee (PHP)</th>
+    </tr>
+    <% @books.each do |b| %>
+      <% info = b.overdue_info %>
+      <tr>
+        <td><%= b.borrow_id %></td>
+        <td><%= b.title %></td>
+        <td><%= b.borrower_name %></td>
+        <td><%= b.borrow_date %></td>
+        <td><%= b.due_date %></td>
+        <td><%= info[:days] %></td>
+        <td><%= '%.2f' % info[:fee] %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
+
+<a href="/">Back to Catalog</a>

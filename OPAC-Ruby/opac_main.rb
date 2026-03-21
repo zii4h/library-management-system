@@ -24,6 +24,10 @@ FEATURES:
 
 =end
 
+require 'sinatra'
+require 'mysql2'
+require 'date'
+
 ENV['MARIADB_TLS_DISABLE_PEER_VERIFICATION'] = '1' #ignore (ssl fix)
 
 DB_CONFIG = {
