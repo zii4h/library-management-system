@@ -1,9 +1,28 @@
-# -------------------------------------------------------------------
-# 6DIPROGLANG | 2nd Semester, School Year 2025-2026
-# Final Project: OPAC (Online Public Access Catalog) System
-# Programming Language: Ruby
-# Framework: Sinatra (Web-based GUI)
-# -------------------------------------------------------------------
+=begin
+
+6DIPROGLANG | 2nd Semester, School Year 2025-2026
+Final Project: OPAC (Online Public Access Catalog) System
+Programming Language: Ruby
+Framework: Sinatra (Web-based GUI)
+Database: MySQL via mysql2 gem
+
+File: opac_main.rb
+Description: Main program file containing all classes, database logic, and Sinatra routes.
+
+CLASSES: 
+- Database        : Manages MySQL connection, table setup, and disconnection
+- Book            : Abstract data type representing a book record
+- BorrowedBook    : Abstract data type representing a borrowing transaction
+- BookRepository  : Data access layer, all SQL operations on both tables
+
+FEATURES:
+- Add, Edit, Delete book records
+- Borrow and Return books
+- Overdue fee computation (PHP 10.00/day)
+- Search by title, author, or ISBN
+- Admin authentication with session management
+
+=end
 
 ENV['MARIADB_TLS_DISABLE_PEER_VERIFICATION'] = '1' #ignore (ssl fix)
 
