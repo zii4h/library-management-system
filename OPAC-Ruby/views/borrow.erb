@@ -1,22 +1,41 @@
-<h2>Borrow Book</h2>
+<!-- LEFT PANEL -->
+<div class="left-panel">
+  <div class="panel-section">
+    <div class="panel-title">Navigation</div>
+    <div class="panel-body" style="padding:0;">
+      <a href="/" class="panel-item" style="padding:0.35rem 0.85rem;">&#8592; Back to Catalog</a>
+    </div>
+  </div>
+</div>
 
-<p><strong>Title:</strong> <%= @book.title %></p>
-<p><strong>Author:</strong> <%= @book.author %></p>
-<p><strong>ISBN:</strong> <%= @book.isbn %></p>
-
-<form method="post" action="/borrow/<%= @book.book_id %>">
-  <p>
-    <label>Borrower Name:</label><br>
-    <input type="text" name="borrower" required>
-  </p>
-  <p>
-    <label>Borrow Date:</label><br>
-    <input type="date" name="borrow_date" value="<%= @today %>" required>
-  </p>
-  <p>
-    <label>Due Date:</label><br>
-    <input type="date" name="due_date" required>
-  </p>
-  <button type="submit">Confirm Borrow</button>
-  <a href="/">Cancel</a>
-</form>
+<!-- MAIN -->
+<div class="main-content">
+  <div class="page-header">
+    <div class="page-title">Borrow Book</div>
+    <div class="page-sub">Record a new borrowing transaction</div>
+  </div>
+  <div class="form-card">
+    <div class="book-info">
+      <div class="book-info-title"><%= @book.title %></div>
+      <div class="book-info-meta"><%= @book.author %> &nbsp;&middot;&nbsp; ISBN: <%= @book.isbn %> &nbsp;&middot;&nbsp; <%= @book.genre %></div>
+    </div>
+    <form method="post" action="/borrow/<%= @book.book_id %>">
+      <div class="form-group">
+        <label class="form-label">Borrower Name *</label>
+        <input type="text" name="borrower" class="form-input" placeholder="Full name of borrower" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Borrow Date *</label>
+        <input type="date" name="borrow_date" class="form-input" value="<%= @today %>" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Due Date *</label>
+        <input type="date" name="due_date" class="form-input" required>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-warning">Confirm Borrow</button>
+        <a href="/" class="btn btn-ghost">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>

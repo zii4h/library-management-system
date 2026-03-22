@@ -1,26 +1,470 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OPAC System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { zoom: 1.5; }
+
+    :root {
+      --bg:       #f2efe9;
+      --bg2:      #ebe7e0;
+      --white:    #faf8f5;
+      --panel:    #edeae3;
+      --accent:   #1a5296;
+      --accent2:  #154080;
+      --text:     #1c1c1e;
+      --subtext:  #6b6b72;
+      --border:   #ccc8bf;
+      --border2:  #bbb6ac;
+      --success:  #1a7a3e;
+      --warning:  #b45309;
+      --danger:   #b91c1c;
+      --link:     #1a5296;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* TOP HEADER */
+    .site-header {
+      background: var(--accent);
+      padding: 0.6rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .site-name {
+      font-family: 'Source Serif 4', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.2px;
+    }
+
+    .site-tagline {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.6);
+      font-family: 'DM Mono', monospace;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .header-link {
+      color: rgba(255,255,255,0.75);
+      font-size: 0.8rem;
+      text-decoration: none;
+      padding: 0.3rem 0.6rem;
+      border-radius: 3px;
+      transition: all 0.15s;
+    }
+
+    .header-link:hover { color: #fff; background: rgba(255,255,255,0.1); }
+
+    .admin-pill {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      font-size: 0.65rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.5px;
+    }
+
+    /* SEARCH BAR AREA */
+    .search-area {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0.9rem 2rem;
+    }
+
+    .search-form {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .search-select {
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      border-radius: 4px;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.82rem;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text);
+      outline: none;
+      cursor: pointer;
+    }
+
+    .search-input {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--border2);
+      border-radius: 4px;
+      padding: 0.5rem 0.85rem;
+      font-size: 0.875rem;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus { border-color: var(--accent); background: var(--white); }
+    .search-input::placeholder { color: var(--subtext); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.48rem 1rem;
+      border-radius: 4px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      text-decoration: none;
+      border: 1px solid transparent;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .btn-search  { background: var(--accent); color: white; border-color: var(--accent); }
+    .btn-search:hover { background: var(--accent2); }
+    .btn-outline { background: var(--white); color: var(--accent); border-color: var(--accent); }
+    .btn-outline:hover { background: var(--accent); color: white; }
+    .btn-success { background: var(--white); color: var(--success); border-color: var(--success); }
+    .btn-success:hover { background: var(--success); color: white; }
+    .btn-warning { background: var(--white); color: var(--warning); border-color: var(--warning); }
+    .btn-warning:hover { background: var(--warning); color: white; }
+    .btn-danger  { background: var(--white); color: var(--danger);  border-color: var(--danger);  }
+    .btn-danger:hover  { background: var(--danger);  color: white; }
+    .btn-ghost   { background: transparent; color: var(--subtext); border-color: transparent; }
+    .btn-ghost:hover { background: var(--bg2); color: var(--text); }
+    .btn-sm { padding: 0.28rem 0.65rem; font-size: 0.75rem; }
+    .btn-primary { background: var(--accent); color: white; border-color: var(--accent); }
+    .btn-primary:hover { background: var(--accent2); }
+
+    /* FLASH */
+    .flash {
+      padding: 0.65rem 2rem;
+      font-size: 0.82rem;
+      border-bottom: 1px solid;
+    }
+    .flash-success { background: #f0fdf4; border-color: #86efac; color: var(--success); }
+    .flash-error   { background: #fef2f2; border-color: #fca5a5; color: var(--danger);  }
+    .flash-warning { background: #fffbeb; border-color: #fcd34d; color: var(--warning); }
+
+    /* BODY LAYOUT */
+    .body-layout {
+      display: flex;
+      flex: 1;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1.25rem 2rem 4rem;
+      gap: 1.5rem;
+      width: 100%;
+    }
+
+    /* LEFT PANEL */
+    .left-panel {
+      width: 200px;
+      flex-shrink: 0;
+    }
+
+    .panel-section {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .panel-title {
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      padding: 0.55rem 0.85rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--subtext);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      font-family: 'DM Mono', monospace;
+    }
+
+    .panel-body { padding: 0.75rem 0.85rem; }
+
+    .panel-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.3rem 0;
+      font-size: 0.8rem;
+      color: var(--link);
+      cursor: pointer;
+      text-decoration: none;
+      border-bottom: 1px solid var(--bg2);
+    }
+
+    .panel-item:last-child { border-bottom: none; }
+    .panel-item:hover { color: var(--accent2); text-decoration: underline; }
+
+    .panel-count {
+      font-size: 0.7rem;
+      color: var(--subtext);
+      font-family: 'DM Mono', monospace;
+    }
+
+    .stat-row { display: flex; flex-direction: column; gap: 0.5rem; }
+
+    .stat-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+    }
+
+    .stat-item-label { color: var(--subtext); }
+    .stat-item-val { font-family: 'DM Mono', monospace; font-weight: 500; font-size: 0.82rem; }
+    .val-available { color: var(--success); }
+    .val-borrowed  { color: var(--warning); }
+    .val-overdue   { color: var(--danger);  }
+
+    /* MAIN CONTENT */
+    .main-content { flex: 1; min-width: 0; }
+
+    .results-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.85rem;
+    }
+
+    .results-count {
+      font-family: 'Source Serif 4', serif;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    .results-count strong { color: var(--accent); }
+
+    .admin-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 0.85rem;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      margin-bottom: 0.85rem;
+    }
+
+    .admin-toolbar-label {
+      font-size: 0.72rem;
+      color: var(--subtext);
+      font-family: 'DM Mono', monospace;
+      margin-right: auto;
+    }
+
+    /* TABLE */
+    .table-wrap {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+
+    thead th {
+      padding: 0.6rem 0.9rem;
+      text-align: left;
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--subtext);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      font-family: 'DM Mono', monospace;
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+    }
+
+    tbody tr { border-bottom: 1px solid var(--bg2); transition: background 0.1s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #f7f4ee; }
+
+    tbody td {
+      padding: 0.7rem 0.9rem;
+      font-size: 0.855rem;
+      color: var(--text);
+      vertical-align: middle;
+    }
+
+    .cell-id    { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--subtext); width: 40px; }
+    .cell-title { font-weight: 500; color: var(--link); }
+    .cell-isbn  { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--subtext); }
+
+    .badge {
+      display: inline-block;
+      padding: 0.15rem 0.45rem;
+      border-radius: 3px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.2px;
+      border: 1px solid;
+    }
+
+    .badge-available { background: #f0fdf4; color: var(--success); border-color: #86efac; }
+    .badge-borrowed  { background: #fffbeb; color: var(--warning); border-color: #fcd34d; }
+
+    .actions-cell { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: var(--subtext);
+      font-size: 0.875rem;
+    }
+
+    /* FORM PAGES */
+    .page-header { margin-bottom: 1.25rem; }
+    .page-title  { font-family: 'Source Serif 4', serif; font-size: 1.2rem; font-weight: 700; color: var(--text); }
+    .page-sub    { font-size: 0.78rem; color: var(--subtext); margin-top: 0.2rem; }
+
+    .form-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 1.75rem;
+      max-width: 480px;
+    }
+
+    .form-group { margin-bottom: 1rem; }
+
+    .form-label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--subtext);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-family: 'DM Mono', monospace;
+      margin-bottom: 0.3rem;
+    }
+
+    .form-input {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.5rem 0.75rem;
+      color: var(--text);
+      font-size: 0.875rem;
+      font-family: 'DM Sans', sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus { border-color: var(--accent); background: var(--white); }
+
+    .form-actions { display: flex; gap: 0.6rem; margin-top: 1.4rem; }
+
+    .book-info {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.85rem 1rem;
+      margin-bottom: 1.1rem;
+    }
+
+    .book-info-title { font-size: 0.92rem; font-weight: 600; color: var(--text); margin-bottom: 0.2rem; }
+    .book-info-meta  { font-size: 0.73rem; color: var(--subtext); font-family: 'DM Mono', monospace; }
+
+    .overdue-fee {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--danger);
+      font-weight: 600;
+    }
+
+    /* FOOTER */
+    .site-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      border-top: 1px solid var(--border);
+      padding: 0.6rem 2rem;
+      background: var(--white);
+      font-size: 0.72rem;
+      color: var(--subtext);
+      font-family: 'DM Mono', monospace;
+    }
+  </style>
 </head>
 <body>
-  <nav>
-    <a href="/">Home</a> |
+
+<div class="site-header">
+  <div>
+    <div class="site-name">OPAC System</div>
+    <div class="site-tagline">Online Public Access Catalog</div>
+  </div>
+  <div class="header-right">
+    <a href="/" class="header-link">Catalog</a>
     <% if admin? %>
-      <a href="/add">Add Book</a> |
-      <a href="/overdue">Overdue</a> |
-      <a href="/logout">Logout</a>
+      <a href="/add" class="header-link">Add Book</a>
+      <a href="/overdue" class="header-link">Overdue</a>
+      <span class="admin-pill">ADMIN</span>
+      <a href="/logout" class="header-link">Logout</a>
     <% else %>
-      <a href="/login">Admin Login</a>
+      <a href="/login" class="header-link">Admin Login</a>
     <% end %>
-  </nav>
-  <hr>
+  </div>
+</div>
 
-  <% if @flash %>
-    <p><strong><%= @flash[:msg] %></strong></p>
-  <% end %>
+<div class="search-area">
+  <form method="get" action="/" class="search-form">
+    <select class="search-select" name="search_type">
+      <option value="all">Library catalog</option>
+      <option value="title">Title</option>
+      <option value="author">Author</option>
+      <option value="isbn">ISBN</option>
+    </select>
+    <input type="text" name="search" class="search-input" value="<%= defined?(@search) ? @search : '' %>" placeholder="Search for books...">
+    <button type="submit" class="btn btn-search">Search</button>
+    <% if defined?(@search) && !@search.to_s.empty? %>
+      <a href="/" class="btn btn-ghost btn-sm">Clear</a>
+    <% end %>
+  </form>
+</div>
 
+<% if @flash %>
+  <div class="flash flash-<%= @flash[:type] %>"><%= @flash[:msg] %></div>
+<% end %>
+
+<div class="body-layout">
   <%= yield %>
+</div>
+
+<div class="site-footer">
+  OPAC System &nbsp;|&nbsp; Holy Angel University &nbsp;|&nbsp; 6DIPROGLANG Final Project
+</div>
+
 </body>
 </html>

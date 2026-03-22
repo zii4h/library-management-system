@@ -1,22 +1,41 @@
-<h2>Edit Book</h2>
+<!-- LEFT PANEL -->
+<div class="left-panel">
+  <div class="panel-section">
+    <div class="panel-title">Navigation</div>
+    <div class="panel-body" style="padding:0;">
+      <a href="/" class="panel-item" style="padding:0.35rem 0.85rem;">&#8592; Back to Catalog</a>
+    </div>
+  </div>
+</div>
 
-<form method="post" action="/edit/<%= @book.book_id %>">
-  <p>
-    <label>Title:</label><br>
-    <input type="text" name="title" value="<%= @book.title %>" required>
-  </p>
-  <p>
-    <label>Author:</label><br>
-    <input type="text" name="author" value="<%= @book.author %>" required>
-  </p>
-  <p>
-    <label>ISBN:</label><br>
-    <input type="text" name="isbn" value="<%= @book.isbn %>" required>
-  </p>
-  <p>
-    <label>Genre:</label><br>
-    <input type="text" name="genre" value="<%= @book.genre %>">
-  </p>
-  <button type="submit">Save Changes</button>
-  <a href="/">Cancel</a>
-</form>
+<!-- MAIN -->
+<div class="main-content">
+  <div class="page-header">
+    <div class="page-title">Edit Book</div>
+    <div class="page-sub">Updating record #<%= @book.book_id %></div>
+  </div>
+  <div class="form-card">
+    <form method="post" action="/edit/<%= @book.book_id %>">
+      <div class="form-group">
+        <label class="form-label">Title *</label>
+        <input type="text" name="title" class="form-input" value="<%= @book.title %>" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Author *</label>
+        <input type="text" name="author" class="form-input" value="<%= @book.author %>" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">ISBN *</label>
+        <input type="text" name="isbn" class="form-input" value="<%= @book.isbn %>" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Genre</label>
+        <input type="text" name="genre" class="form-input" value="<%= @book.genre %>">
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a href="/" class="btn btn-ghost">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>

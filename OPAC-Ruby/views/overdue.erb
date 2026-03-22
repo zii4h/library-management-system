@@ -1,33 +1,62 @@
-<h2>Overdue Books</h2>
+<!-- LEFT PANEL -->
+<div class="left-panel">
+  <div class="panel-section">
+    <div class="panel-title">Navigation</div>
+    <div class="panel-body" style="padding:0;">
+      <a href="/" class="panel-item" style="padding:0.35rem 0.85rem;">&#8592; Back to Catalog</a>
+    </div>
+  </div>
+  <div class="panel-section">
+    <div class="panel-title">Summary</div>
+    <div class="panel-body">
+      <div class="stat-row">
+        <div class="stat-item">
+          <span class="stat-item-label">Total Overdue</span>
+          <span class="stat-item-val val-overdue"><%= @books.size %></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-<p>Total overdue: <%= @books.size %></p>
+<!-- MAIN -->
+<div class="main-content">
+  <div class="page-header">
+    <div class="page-title">Overdue Books</div>
+    <div class="page-sub"><%= @books.size %> book<%= @books.size == 1 ? '' : 's' %> past due date</div>
+  </div>
 
-<% if @books.empty? %>
-  <p>No overdue books.</p>
-<% else %>
-  <table border="1" cellpadding="5">
-    <tr>
-      <th>Borrow ID</th>
-      <th>Title</th>
-      <th>Borrower</th>
-      <th>Borrow Date</th>
-      <th>Due Date</th>
-      <th>Days Overdue</th>
-      <th>Fee (PHP)</th>
-    </tr>
-    <% @books.each do |b| %>
-      <% info = b.overdue_info %>
-      <tr>
-        <td><%= b.borrow_id %></td>
-        <td><%= b.title %></td>
-        <td><%= b.borrower_name %></td>
-        <td><%= b.borrow_date %></td>
-        <td><%= b.due_date %></td>
-        <td><%= info[:days] %></td>
-        <td><%= '%.2f' % info[:fee] %></td>
-      </tr>
+  <div class="table-wrap">
+    <% if @books.empty? %>
+      <div class="empty-state">No overdue books. All good.</div>
+    <% else %>
+      <table>
+        <thead>
+          <tr>
+            <th>Borrow ID</th>
+            <th>Title</th>
+            <th>Borrower</th>
+            <th>Borrow Date</th>
+            <th>Due Date</th>
+            <th>Days Overdue</th>
+            <th>Fee (PHP)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @books.each do |b| %>
+            <% info = b.overdue_info %>
+            <tr>
+              <td class="cell-id"><%= b.borrow_id %></td>
+              <td class="cell-title"><%= b.title %></td>
+              <td><%= b.borrower_name %></td>
+              <td class="cell-isbn"><%= b.borrow_date %></td>
+              <td class="cell-isbn"><%= b.due_date %></td>
+              <td style="color:var(--danger);font-family:'DM Mono',monospace;font-weight:600;"><%= info[:days] %> days</td>
+              <td class="overdue-fee">PHP <%= '%.2f' % info[:fee] %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     <% end %>
-  </table>
-<% end %>
-
-<a href="/">Back to Catalog</a>
+  </div>
+</div>

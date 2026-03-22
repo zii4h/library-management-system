@@ -1,50 +1,135 @@
-<h1>OPAC — Online Public Access Catalog</h1>
+<!-- LEFT PANEL -->
+<div class="left-panel">
 
-<p>Total: <%= @stats[:total] %> | Available: <%= @stats[:available] %> | Borrowed: <%= @stats[:borrowed] %> | Overdue: <%= @stats[:overdue] %></p>
-
-<form method="get" action="/">
-  <input type="text" name="search" value="<%= @search %>" placeholder="Search by title, author, or ISBN">
-  <button type="submit">Search</button>
-  <a href="/">Clear</a>
-</form>
-
-<hr>
-
-<table border="1" cellpadding="5">
-  <tr>
-    <th>ID</th>
-    <th>Title</th>
-    <th>Author</th>
-    <th>ISBN</th>
-    <th>Genre</th>
-    <th>Status</th>
-    <% if admin? %>
-      <th>Actions</th>
-    <% end %>
-  </tr>
-  <% @books.each do |book| %>
-  <tr>
-    <td><%= book.book_id %></td>
-    <td><%= book.title %></td>
-    <td><%= book.author %></td>
-    <td><%= book.isbn %></td>
-    <td><%= book.genre %></td>
-    <td><%= book.status %></td>
-    <% if admin? %>
-    <td>
-      <a href="/edit/<%= book.book_id %>">Edit</a> |
-      <% if book.status == 'available' %>
-        <a href="/borrow/<%= book.book_id %>">Borrow</a> |
-      <% else %>
-        <form method="post" action="/return/<%= book.book_id %>" style="display:inline">
-          <button type="submit">Return</button>
-        </form> |
-      <% end %>
-      <form method="post" action="/delete/<%= book.book_id %>" style="display:inline">
-        <button type="submit" onclick="return confirm('Delete this book?')">Delete</button>
-      </form>
-    </td>
-    <% end %>
-  </tr>
+  <% if admin? %>
+  <div class="panel-section">
+    <div class="panel-title">Dashboard</div>
+    <div class="panel-body">
+      <div class="stat-row">
+        <div class="stat-item">
+          <span class="stat-item-label">Total Books</span>
+          <span class="stat-item-val"><%= @stats[:total] %></span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-item-label">Available</span>
+          <span class="stat-item-val val-available"><%= @stats[:available] %></span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-item-label">Borrowed</span>
+          <span class="stat-item-val val-borrowed"><%= @stats[:borrowed] %></span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-item-label">Overdue</span>
+          <span class="stat-item-val val-overdue"><%= @stats[:overdue] %></span>
+        </div>
+      </div>
+    </div>
+  </div>
   <% end %>
-</table>
+
+  <div class="panel-section">
+    <div class="panel-title">Browse by Genre</div>
+    <div class="panel-body" style="padding:0;">
+      <% genres = @books.map(&:genre).uniq.compact.sort %>
+      <% if genres.empty? %>
+        <div style="padding:0.75rem 0.85rem;font-size:0.78rem;color:var(--subtext);">No genres available.</div>
+      <% else %>
+        <% genres.each do |genre| %>
+          <% count = @books.count { |b| b.genre == genre } %>
+          <a href="/?search=<%= genre %>" class="panel-item" style="padding:0.35rem 0.85rem;">
+            <span><%= genre %></span>
+            <span class="panel-count">(<%= count %>)</span>
+          </a>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="panel-section">
+    <div class="panel-title">Availability</div>
+    <div class="panel-body" style="padding:0;">
+      <a href="/" class="panel-item" style="padding:0.35rem 0.85rem;">
+        <span>All items</span>
+        <span class="panel-count">(<%= @books.size %>)</span>
+      </a>
+      <% avail_count = @books.count { |b| b.status == 'available' } %>
+      <a href="/?search=" class="panel-item" style="padding:0.35rem 0.85rem;">
+        <span style="color:var(--success);">Available</span>
+        <span class="panel-count">(<%= avail_count %>)</span>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+
+  <div class="results-header">
+    <div class="results-count">
+      <% if defined?(@search) && !@search.to_s.empty? %>
+        Results for <strong>"<%= @search %>"</strong> — <%= @books.size %> record<%= @books.size == 1 ? '' : 's' %> found.
+      <% else %>
+        Showing <strong><%= @books.size %></strong> record<%= @books.size == 1 ? '' : 's' %> in catalog.
+      <% end %>
+    </div>
+  </div>
+
+  <% if admin? %>
+  <div class="admin-toolbar">
+    <span class="admin-toolbar-label">Admin Actions</span>
+    <a href="/add" class="btn btn-primary btn-sm">+ Add Book</a>
+    <a href="/overdue" class="btn btn-outline btn-sm">View Overdue</a>
+  </div>
+  <% end %>
+
+  <div class="table-wrap">
+    <% if @books.empty? %>
+      <div class="empty-state">No books found.</div>
+    <% else %>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>ISBN</th>
+            <th>Genre</th>
+            <th>Status</th>
+            <% if admin? %><th>Actions</th><% end %>
+          </tr>
+        </thead>
+        <tbody>
+          <% @books.each do |book| %>
+          <tr>
+            <td class="cell-id"><%= book.book_id %></td>
+            <td class="cell-title"><%= book.title %></td>
+            <td><%= book.author %></td>
+            <td class="cell-isbn"><%= book.isbn %></td>
+            <td><%= book.genre %></td>
+            <td><span class="badge badge-<%= book.status %>"><%= book.status %></span></td>
+            <% if admin? %>
+            <td>
+              <div class="actions-cell">
+                <a href="/edit/<%= book.book_id %>" class="btn btn-outline btn-sm">Edit</a>
+                <% if book.status == 'available' %>
+                  <a href="/borrow/<%= book.book_id %>" class="btn btn-warning btn-sm">Borrow</a>
+                <% else %>
+                  <form method="post" action="/return/<%= book.book_id %>" style="display:inline;" onsubmit="return confirm('Process return?')">
+                    <button type="submit" class="btn btn-success btn-sm">Return</button>
+                  </form>
+                <% end %>
+                <form method="post" action="/delete/<%= book.book_id %>" style="display:inline;" onsubmit="return confirm('Delete this book?')">
+                  <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+              </div>
+            </td>
+            <% end %>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+  </div>
+
+</div>
