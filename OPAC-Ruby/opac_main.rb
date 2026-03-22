@@ -229,8 +229,8 @@ class BookRepository
   # SUBPROGRAM: search_books — SELECT books matching search term
   def search_books(term)
     like = "%#{term}%"
-    @db.prepare("SELECT * FROM books WHERE title LIKE ? OR author LIKE ? OR isbn LIKE ? ORDER BY book_id DESC")
-       .execute(like, like, like).map { |row| row_to_book(row) }
+    @db.prepare("SELECT * FROM books WHERE title LIKE ? OR author LIKE ? OR isbn LIKE ? OR genre LIKE ? ORDER BY book_id DESC")
+        .execute(like, like, like, like).map { |row| row_to_book(row) }
   end
 
   # SUBPROGRAM: update_book — UPDATE existing book record
@@ -375,7 +375,7 @@ end
 
 get '/login' do
   @flash = session.delete(:flash)
-  erb :login
+  erb :login, layout: false
 end
 
 post '/login' do
