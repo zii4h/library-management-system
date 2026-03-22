@@ -1,59 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Login — OPAC</title>
-  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #f2efe9; --white: #faf8f5; --accent: #1a5296; --accent2: #154080;
-      --text: #1c1c1e; --subtext: #6b6b72; --border: #ccc8bf; --border2: #bbb6ac;
-      --danger: #b91c1c;
-    }
-    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
-    header { background: var(--accent); padding: 0.6rem 2rem; }
-    .site-name { font-family: 'Source Serif 4', serif; font-size: 1rem; font-weight: 700; color: #fff; }
-    .site-tagline { font-size: 0.65rem; color: rgba(255,255,255,0.55); font-family: 'DM Mono', monospace; }
-    .login-wrap { flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem; }
-    .login-card { background: var(--white); border: 1px solid var(--border); border-radius: 5px; padding: 2.25rem; width: 100%; max-width: 340px; }
-    .login-eyebrow { font-size: 0.65rem; color: var(--subtext); text-transform: uppercase; letter-spacing: 1px; font-family: 'DM Mono', monospace; margin-bottom: 0.4rem; }
-    .login-title { font-family: 'Source Serif 4', serif; font-size: 1.25rem; font-weight: 700; color: var(--text); margin-bottom: 0.2rem; }
-    .login-sub { font-size: 0.78rem; color: var(--subtext); margin-bottom: 1.5rem; }
-    .form-group { margin-bottom: 1rem; }
-    .form-label { display: block; font-size: 0.72rem; font-weight: 600; color: var(--subtext); text-transform: uppercase; letter-spacing: 0.5px; font-family: 'DM Mono', monospace; margin-bottom: 0.3rem; }
-    .form-input { width: 100%; background: var(--bg); border: 1px solid var(--border2); border-radius: 4px; padding: 0.5rem 0.75rem; color: var(--text); font-size: 0.875rem; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; }
-    .form-input:focus { border-color: var(--accent); background: var(--white); }
-    .btn-submit { width: 100%; padding: 0.5rem; background: var(--accent); color: white; border: none; border-radius: 4px; font-size: 0.875rem; font-weight: 500; font-family: 'DM Sans', sans-serif; cursor: pointer; margin-top: 0.5rem; transition: background 0.15s; }
-    .btn-submit:hover { background: var(--accent2); }
-    .back-link { display: block; text-align: center; margin-top: 1.1rem; font-size: 0.78rem; color: var(--subtext); text-decoration: none; }
-    .back-link:hover { color: var(--accent); text-decoration: underline; }
-    .flash { padding: 0.6rem 0.85rem; border-radius: 4px; font-size: 0.8rem; margin-bottom: 1rem; border: 1px solid; background: #fef2f2; border-color: #fca5a5; color: var(--danger); }
-  </style>
-</head>
-<body>
-  <header>
-    <div class="site-name">OPAC System</div>
-    <div class="site-tagline">Online Public Access Catalog</div>
-  </header>
-  <div class="login-wrap">
-    <div class="login-card">
-      <div class="login-eyebrow">Admin Access</div>
-      <div class="login-title">Sign In</div>
-      <div class="login-sub">Enter your password to manage the catalog.</div>
-      <% if @flash %>
-        <div class="flash"><%= @flash[:msg] %></div>
-      <% end %>
-      <form method="post" action="/login">
-        <div class="form-group">
-          <label class="form-label">Password</label>
-          <input type="password" name="password" class="form-input" placeholder="Admin password" autofocus>
-        </div>
-        <button type="submit" class="btn-submit">Sign In</button>
-      </form>
-      <a href="/" class="back-link">&#8592; Back to Catalog</a>
-    </div>
-  </div>
-</body>
-</html>
+<h2>Admin Login</h2>
+
+<form method="post" action="/login">
+  <label>Password:</label>
+  <input type="password" name="password">
+  <button type="submit">Login</button>
+</form>
