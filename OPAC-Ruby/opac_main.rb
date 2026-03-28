@@ -2,7 +2,7 @@
 
 6DIPROGLANG | 2nd Semester, School Year 2025-2026
 Final Project: OPAC (Online Public Access Catalog) System
-Programming Language: Ruby
+Programming Language: RUBY
 Framework: Sinatra (Web-based GUI)
 Database: MySQL via mysql2 gem
 
@@ -18,7 +18,7 @@ CLASSES:
 FEATURES:
 - Add, Edit, Delete book records
 - Borrow and Return books
-- Overdue fee computation (PHP 10.00/day)
+- DECIMAL(10,2) Overdue fee computation (PHP 10.00/day)
 - Search by title, author, or ISBN
 - Admin authentication with session management
 
@@ -28,10 +28,6 @@ FEATURES:
 ENV['MARIADB_TLS_DISABLE_PEER_VERIFICATION'] = '1'
 
 # --- LIBRARIES ---
-# sinatra : Lightweight Ruby web framework. Handles HTTP routes (GET/POST),
-#           renders HTML views, and runs a local web server on port 4567.
-# mysql2  : Ruby gem for connecting and querying a MySQL/MariaDB database.
-# date    : Ruby standard library for date arithmetic (overdue calculation).
 require 'sinatra'
 require 'mysql2'
 require 'date'
@@ -47,8 +43,9 @@ DB_CONFIG = {
   database: 'opac_db' 
 }.freeze
 
-OVERDUE_FEE_PER_DAY = 10  # PHP 10 per day overdue
-ADMIN_PASSWORD      = 'admin123'  # Change this to your preferred admin password
+OVERDUE_FEE_PER_DAY = 10  
+ADMIN_PASSWORD      = 'admin123'  
+
 
 # =============================================================================
 # SINATRA CONFIGURATION
@@ -58,6 +55,7 @@ set :port, 4567
 set :bind, 'localhost'
 set :server, 'webrick'
 
+
 # =============================================================================
 # CLASS: Database
 # PURPOSE: Manages MySQL connection, table setup, and disconnection.
@@ -65,6 +63,7 @@ set :server, 'webrick'
 # =============================================================================
 class Database
   @connection = nil
+
 
   # SUBPROGRAM: connect
   # PURPOSE: Opens MySQL connection and sets up the database and both tables.
@@ -324,6 +323,7 @@ class BookRepository
   end
 end
 
+
 # =============================================================================
 # INITIALIZATION
 # =============================================================================
@@ -340,6 +340,7 @@ end
 
 at_exit { Database.disconnect }
 enable :sessions
+
 
 # =============================================================================
 # ADMIN AUTH HELPERS (defined before routes so they are available everywhere)
@@ -359,6 +360,7 @@ def require_admin
     redirect '/login'
   end
 end
+
 
 # =============================================================================
 # SINATRA ROUTES (Event-Driven Programming)

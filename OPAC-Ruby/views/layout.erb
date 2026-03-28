@@ -8,7 +8,13 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html { zoom: 1.5; }
+    html {
+      font-size: 150%;
+    }
+
+    body {
+      overflow-x: hidden;
+    }
 
     :root {
       --bg:       #f2efe9;
@@ -44,6 +50,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      width: 100%;
     }
 
     .site-name {
@@ -92,6 +99,7 @@
       background: var(--white);
       border-bottom: 1px solid var(--border);
       padding: 0.9rem 2rem;
+      width: 100%;
     }
 
     .search-form {
@@ -177,13 +185,10 @@
     .body-layout {
       display: flex;
       flex: 1;
-      max-width: 1280px;
-      margin: 0 auto;
       padding: 1.25rem 2rem 4rem;
       gap: 1.5rem;
       width: 100%;
     }
-
     /* LEFT PANEL */
     .left-panel {
       width: 200px;
@@ -466,7 +471,7 @@
 </div>
 
 <div class="site-footer">
-  OPAC System &nbsp;|&nbsp; Holy Angel University &nbsp;|&nbsp; 6DIPROGLANG Final Project
+  OPAC System &nbsp;|&nbsp; Ruby Language &nbsp;|&nbsp; 6DIPROGLANG Final Project
 </div>
 
 </body>
