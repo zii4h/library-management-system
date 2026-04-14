@@ -1,18 +1,8 @@
 <img width="1920" height="1080" alt="Image" src="https://github.com/user-attachments/assets/961e99c5-4056-454c-a1f3-cf69ac08e7ac" />
 
 # OPAC System — Online Public Access Catalog
-**6DIPROGLANG Final Project | Holy Angel University | S.Y. 2025-2026**
 
 Built with Ruby + Sinatra + MySQL
-
----
-
-## Group Members
-- Evangelista, Vince — Backend Developer
-- Mallari, John S. — Documentation
-- Oliveros, Michael Francis Noel M. — Database Administrator
-- Pineda, Sophia Keziah G. — Project Lead / QA
-- Sarmiento, Maria Anne Joy — Frontend Developer
 
 ---
 
@@ -47,11 +37,6 @@ ruby opac_main.rb
 ```
 http://localhost:4567
 ```
-
----
-
-## Admin Login
-Password: `admin123`
 
 ---
 
